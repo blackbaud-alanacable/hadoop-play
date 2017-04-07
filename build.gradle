@@ -1,19 +1,47 @@
 buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+    }
     dependencies {
         classpath "com.blackbaud:gradle-internal:3.+"
+        classpath "com.blackbaud:gradle-docker:1.+"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE"
     }
 }
 
 apply plugin: "blackbaud-internal"
+apply plugin: "java"
+apply plugin: "docker"
+//apply plugin: 'spring-boot'
 
 dependencies {
     compile "com.google.guava:guava:18.0"
     compile "org.projectlombok:lombok:1.16.4"
+    compile "org.apache.hadoop:hadoop-common:2.7.+"
+    compile "org.apache.hadoop:hadoop-hdfs:2.7.+"
+    compile "org.apache.hadoop:hadoop-mapreduce-client-common:2.7.+"
+    //compile "org.springframework.data:spring-data-hadoop-boot:2.4.+"
 
     testCompile "com.blackbaud:common-test:1.+"
     testCompile "org.codehaus.groovy:groovy-all:2.4.3"
     testCompile ("org.spockframework:spock-core:1.0-groovy-2.4") {
         exclude group: "org.codehaus.groovy"
     }
+    testCompile 'org.apache.hadoop:hadoop-minicluster:2.7.+'
 }
+
+//TODO: Figure out why image dies
+docker {
+    container {
+        image {
+            name "cloudera/quickstart:latest"
+        }
+        name "hadoop"
+        hostname "quickstart.cloudera"
+        commandWithArgs "/usr/bin/docker-quickstart"
+        volume "${project.projectDir}:/home/cloudera/play"
+    }
+}
+sourceCompatibility='1.7'
+targetCompatibility='1.7' 
 
