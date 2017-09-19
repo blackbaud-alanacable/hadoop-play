@@ -10,7 +10,6 @@ import org.apache.hadoop.hdfs.HdfsConfiguration
 import org.apache.hadoop.hdfs.MiniDFSCluster
 import org.apache.hadoop.mapreduce.Job
 import org.apache.hadoop.test.PathUtils
-import play.WordCount
 
 public class MiniCluster {
 
